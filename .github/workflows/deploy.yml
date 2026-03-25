@@ -1,30 +1,47 @@
-name: gh-pages deployment
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
-  ghpages:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: install nmrium and create toc
+      - name: Install nmrium and create toc
         run: |
           npm i nmrium-cli --global
           nmrium deleteJSONs
           nmrium createExercisesTOC -i true -s true
           nmrium deleteStructures
           nmrium appendLinks
-          git status
-          git remote -v
-      - name: push to gh-pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          folder: .
-          single-commit: true
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
