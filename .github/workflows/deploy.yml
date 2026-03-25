@@ -30,6 +30,9 @@ jobs:
           nmrium createExercisesTOC -i true -s true
           nmrium deleteStructures
           nmrium appendLinks
+      - name: Clean up unnecessary files
+        run: |
+          rm -f toc.json README.md
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

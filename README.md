@@ -1,21 +1,48 @@
-This series of exercises is provided by Noah Mayor and Julia Villiger, trainee chemistry laboratory assistants, at the Ecole Polytechnique Fédérale de Lausanne (EPFL).
+# NMR Dataset - Test
 
-For each sample the proton (1H) spectrum is provided.
+This repository contains NMR exercises used for student exams. When pushed to `main`, the data is automatically deployed to GitHub Pages and can be accessed via NMRium.
 
-It is divided into 3 series in order to show students the different NMR experiments:
+## How it works
 
-- NMR of organic solvents
-- Simple exercises
-- Medium exercises
+Each test folder (e.g., `test_01_BTzvD97I`) contains numbered exercise subfolders. Each exercise folder contains:
 
-You can either provide the link to all the series or to a specific series.
+- `1h.jdx` — the proton (1H) NMR spectrum
+- `structure.mol` — the molecular structure
 
-This series is part of a set of exercises:
+The folder name includes a random base62 key (e.g., `BTzvD97I`) to prevent students from guessing the URL of other tests.
 
-- [1H](https://nmrdata.github.io/nmr-dataset-apprentis-1h/): Only proton NMR is provided
-- [13C](https://nmrdata.github.io/nmr-dataset-apprentis-13c/): 13C (could be coupled and/or decoupled) spectra are provided
-- [COSY](https://nmrdata.github.io/nmr-dataset-apprentis-cosy/): Only COSY spectra are provided
-- [HSQC / HMBC](https://nmrdata.github.io/nmr-dataset-apprentis-hmbc/): Both HSQC / HMBC spectra are provided
-- [Full](https://nmrdata.github.io/nmr-dataset-apprentis-full/): All the spectra available are provided
+## Creating a new test
+
+1. Create a new folder with the naming convention `test_XX_<base62key>`, where `XX` is the test number and `<base62key>` is a random 8-character base62 string. You can generate one with:
+
+   ```bash
+   node -e "const c='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; let r=''; for(let i=0;i<8;i++) r+=c[Math.floor(Math.random()*62)]; console.log(r)"
+   ```
+
+2. Inside the test folder, create numbered exercise subfolders following the pattern `10_Exercise 1`, `20_Exercise 2`, etc. The numeric prefix controls the display order.
+
+3. Place the `1h.jdx` and `structure.mol` files in each exercise folder.
+
+4. Commit and push to `main`. The GitHub Actions workflow will automatically build and deploy the site.
+
+## Sending the link to students
+
+Once deployed, the test is accessible at:
+
+```
+https://app.nmrium.com/teaching/exercises#?toc=https://lpatiny.github.io/nmr-data-test/toc_<folder_name>.json
+```
+
+For example, for `test_01_BTzvD97I`:
+
+https://app.nmrium.com/teaching/exercises#?toc=https%3A%2F%2Flpatiny.github.io%2Fnmr-data-test%2Ftoc_test_01_BTzvD97I.json
+
+## Training exercises
+
+The repository also contains training series (not tests):
+
+- `10_solvent` — NMR of organic solvents
+- `20_simple` — Simple exercises
+- `30_medium` — Medium exercises
 
 <-- LINKS -->
